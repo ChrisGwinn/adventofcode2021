@@ -6,18 +6,16 @@ Segment = namedtuple('Segment', 'start end')
 segments = []
 
 def segment_to_points(seg):
-    # Do we have any single point segments?
-    if seg.start.x == seg.end.x and seg.start.y == seg.end.y:
-        return [Point(seg.start.x, seg.start.y)]
-    elif seg.start.x == seg.end.x:
-        return [Point(seg.start.x, i) for i in range(min(seg.start.y, seg.end.y), max(seg.start.y, seg.end.y) + 1)]
+    x_step, y_step, steps = 0,0, max(abs(seg.start.x - seg.end.x), abs(seg.start.y - seg.end.y))
+    if seg.start.x == seg.end.x:
+        y_step = 1 if seg.start.y < seg.end.y else -1
     elif seg.start.y == seg.end.y:
-        return [Point(i, seg.start.y) for i in range(min(seg.start.x, seg.end.x), max(seg.start.x, seg.end.x) + 1)]
+        x_step = 1 if seg.start.x < seg.end.x else -1
     else:
         x_step = 1 if seg.start.x < seg.end.x else -1
         y_step = 1 if seg.start.y < seg.end.y else -1
-        return [Point(seg.start.x + (x_step * i), seg.start.y + (y_step * i)) for i in range(abs(seg.start.x - seg.end.x) + 1)]
-        
+    
+    return [Point(seg.start.x + (x_step * i), seg.start.y + (y_step * i)) for i in range(steps + 1)]
 
 file_to_use = 'day5/day5-input.txt'
 #file_to_use = 'day5/day5-sample.txt'
