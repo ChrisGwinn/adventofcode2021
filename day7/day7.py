@@ -10,7 +10,6 @@ with open(file_to_use) as f:
     for c in crabs:
         for i in range(crab_max_pos + 1):
             fuel_to_pos_sums_7_1[i] += abs(c - i)
-            #forgive me for the repeated and inefficient math
             fuel_to_pos_sums_7_2[i] += sum(range(abs(c - i) + 1))
     print (f'7-1 solution: {min(fuel_to_pos_sums_7_1)}')
     print (f'7-2 solution: {min(fuel_to_pos_sums_7_2)}')
