@@ -56,7 +56,6 @@ basin_count = 0
 basin_sizes = {}
 
 def expand_basin_from_loc(loc):
-    # TODO: not sure what to do about equal neighbors
     # up?
     loc_to_check = []
     if loc.y > 0:
