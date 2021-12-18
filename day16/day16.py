@@ -1,6 +1,5 @@
 
 from itertools import islice
-from typing import Literal
 from collections import namedtuple
 
 Packet = namedtuple("Packet", "version literal operator packets bit_count")
@@ -24,8 +23,6 @@ hex_digit_to_bin = {
     'E':'1110',
     'F':'1111'}
 
-
-
 def parse_version(biterator):
     return int(''.join(islice(biterator, 3)), 2)
     
@@ -38,7 +35,6 @@ def parse_literal(biterator, max_bits=None):
     literal = None
 
     # TODO: respect max_bits?
-
     while literal == None:
         continuation = next(biterator)
         bit_count += 1
@@ -61,7 +57,6 @@ def parse_length_type_1(version, operator, biterator):
         subpacket = parse_packet(biterator)
         subpacket_length += subpacket.bit_count
         packets.append(subpacket)
-
     return Packet(version, None, operator, packets, 11 + 9 + subpacket_length)
 
 def parse_length_type_0(version, operator, biterator):
@@ -78,7 +73,6 @@ def parse_length_type_0(version, operator, biterator):
     if remaining_length > 0:
         islice(biterator, remaining_length)
     return Packet(version, None, operator, packets, 15 + 9 + length)
-
 
 def parse_packet(biterator, max_bits=None):
     ver = parse_version(biterator)
@@ -132,7 +126,6 @@ def packet_math(packet):
 #parsed = parse_packet(iter(''.join([hex_digit_to_bin[x] for x in 'A0016C880162017C3686B18A3D4780'])))
 with open('day16/day16-input.txt') as f:
     parsed = parse_packet(iter(''.join([hex_digit_to_bin[x] for x in f.readline()])))
-
 
 print(f'version sum: {sum_packet_version(parsed)}')
 print(f'Packet math results: {packet_math(parsed)}')
